@@ -1,0 +1,57 @@
+package com.employeeManagement;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.employeeManagement.entity.Employee;
+import com.employeeManagement.repository.EmployeeRepository;
+import com.employeeManagement.service.EmployeeService;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+class EmployeeManagementSystemApplicationTests {
+
+	@Autowired
+	 private EmployeeService service;
+	 @MockBean
+	 private EmployeeRepository repo;
+	 
+//	 @Test
+//	 public void getEmployeesTest() {
+//	when(repo.findAll()).thenReturn(Stream.of(new Employee(), new Employee()).collect(Collectors.toList()));
+//		assertEquals(2, service.getAllEmployees().size());
+//	}
+//	 
+//	 @Test
+//	 void addEmpTest() {
+//		 Employee emp = new Employee();
+//		 when(repo.save(emp)).thenReturn(emp);
+//		 assertEquals(emp, service.addEmployee(emp));
+//				 
+//	 }
+	 @Test
+	 void deleteEmpTest(int empId) {
+		 empId=1;
+		 Employee emp = new Employee();
+		 service.addEmployee(emp);
+		 emp.setEmpId((long) empId);
+		 repo.save(emp);
+		 service.deleteEmployeeById((long)1);
+		 verify(repo,times(1)).delete(emp);
+				 
+	 }
+	 
+}
