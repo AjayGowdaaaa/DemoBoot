@@ -55,3 +55,38 @@ class EmployeeManagementSystemApplicationTests {
 	 }
 	 
 }
+
+
+
+//public Employee addEmployee(Employee employee, MultipartFile file) {
+		public Employee addEmployee(Employee employee) {
+		Employee  savedEmployee = employee;
+		
+		
+		if ((employeeRepository.findByPhone(savedEmployee.getPhone())==null && employeeRepository.findByEmail(savedEmployee.getEmail())==null)) {
+			try {
+				savedEmployee = employeeRepository.save(employee);
+				savedEmployee.setESTUATE_ID("EST-"+savedEmployee.getEmpId());
+//				String fileName = StringUtils.cleanPath((file.getOriginalFilename()));
+//				if (fileName.contains("..")) {
+//					throw new BusinessException("Photo Adding", "Not valid photo");
+//				}
+//				
+//				savedEmployee.setPhoto(Base64.getEncoder().encodeToString(file.getBytes()));
+				
+				savedEmployee = employeeRepository.save(employee);
+				return savedEmployee;
+			} catch (IllegalArgumentException e) {
+				throw new BusinessException("EmployeeService-addEmployee-2",
+						"Not Valid Name, Please Enter Valid Name " + e.getMessage());
+			} catch (Exception e) {
+				throw new BusinessException("EmployeeService-addEmployee-3",
+						"Something went wrong in service layer " + e.getMessage());
+			}
+		}else {
+			throw new BusinessException("EmployeeService-addEmployee-1;",
+					"Email Id or Mobile Already Exsists in DataBase ")	;
+		}
+		
+	}
+
